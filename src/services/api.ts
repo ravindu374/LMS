@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:
-    "https://eastbound-vernetta-fragmentized.ngrok-free.dev/api",
+  baseURL: "https://eastbound-vernetta-fragmentized.ngrok-free.dev/api",
 });
 
 api.interceptors.request.use(
