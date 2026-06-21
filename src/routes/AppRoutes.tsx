@@ -20,13 +20,17 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
 import ManageUsers from "../pages/admin/ManageUsers";
 import MySubjects from "../pages/student/MySubjects";
+import Register from "../pages/public/register";
+import ManagePayments from "../pages/admin/ManagePayments";
+
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-
+      <Route path="/register" element={<Register />} />
+ 
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/subjects" element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
       <Route path="/classes" element={<ProtectedRoute><Classes /></ProtectedRoute>} />
@@ -42,6 +46,7 @@ export default function AppRoutes() {
 
       <Route path="/admin/announcements" element={<AdminRoute><ManageAnnouncements /></AdminRoute>} />
       <Route path="/my-subjects" element={<ProtectedRoute><MySubjects /></ProtectedRoute>}/>
+      <Route path="/admin/payments" element={ <AdminRoute> <ManagePayments /> </AdminRoute> } />
     </Routes>
   );
 }

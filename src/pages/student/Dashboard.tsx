@@ -15,9 +15,8 @@ import { useStudentAnnouncements } from "../../hooks/useStudentAnnouncements";
 import { useEnrollmentsApi } from "../../hooks/useEnrollmentsApi";
 
 export default function Dashboard() {
-  const { user } =
-      useAuth();
-
+  const { user } = useAuth();
+  
   const { enrollments } =
     useEnrollmentsApi(
       user?.id || 0
@@ -40,9 +39,9 @@ export default function Dashboard() {
 
 
   return (
-    <StudentLayout>
+  <StudentLayout>
 
-      <div className="mb-8">
+    <div className="mb-8">
         <h1 className="text-4xl font-bold">
           Welcome Back 👋
         </h1>
@@ -53,6 +52,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
         <StatCard
           title="Enrolled Subjects"
           value={enrollments.length}
@@ -67,6 +67,7 @@ export default function Dashboard() {
           title="Quizzes"
           value={quizzes.length}
         />
+
       </div>
 
       <DashboardChart
@@ -81,15 +82,27 @@ export default function Dashboard() {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6 mb-10">
-        {classes.map((item) => (
-          <ZoomCard
-            key={item.id}
-            title={item.title}
-            date={item.date}
-            time={item.time}
-            link={item.zoomLink}
-          />
-        ))}
+
+        {classes.length === 0 ? (
+
+          <p className="text-gray-500">
+            No classes available for paid subjects.
+          </p>
+
+        ) : (
+
+          classes.map((item) => (
+            <ZoomCard
+              key={item.id}
+              title={item.title}
+              date={item.date}
+              time={item.time}
+              link={item.zoomLink}
+            />
+          ))
+
+        )}
+
       </div>
 
       <h2 className="text-2xl font-bold mb-4">
@@ -97,14 +110,26 @@ export default function Dashboard() {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {quizzes.map((item) => (
-          <QuizCard
-            key={item.id}
-            title={item.title}
-            deadline={item.deadline}
-            link={item.formLink}
-          />
-        ))}
+
+        {quizzes.length === 0 ? (
+
+          <p className="text-gray-500">
+            No quizzes available for paid subjects.
+          </p>
+
+        ) : (
+
+          quizzes.map((item) => (
+            <QuizCard
+              key={item.id}
+              title={item.title}
+              deadline={item.deadline}
+              link={item.formLink}
+            />
+          ))
+
+        )}
+
       </div>
 
       <h2 className="text-2xl font-bold mt-10 mb-4">
@@ -112,18 +137,30 @@ export default function Dashboard() {
       </h2>
 
       <div className="space-y-4">
-        {announcements
-          .slice(-3)
-          .reverse()
-          .map((item) => (
-            <AnnouncementCard
-              key={item.id}
-              title={item.title}
-              description={item.description}
-            />
-          ))}
+
+        {announcements.length === 0 ? (
+
+          <p className="text-gray-500">
+            No announcements available for paid subjects.
+          </p>
+
+        ) : (
+
+          announcements
+            .slice(-3)
+            .reverse()
+            .map((item) => (
+              <AnnouncementCard
+                key={item.id}
+                title={item.title}
+                description={item.description}
+              />
+            ))
+
+        )}
+
       </div>
 
-    </StudentLayout>
-  );
+  </StudentLayout>
+);
 }

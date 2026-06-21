@@ -38,3 +38,20 @@ export const deleteUser =
 
     return response.data;
   };
+
+  export const updatePayment =
+  async (
+    userId: number,
+    is_paid: boolean
+  ) => {
+
+    const response =
+      await api.put(
+        `/users/${userId}/payment`,
+        {
+          is_paid,
+        }
+      );
+
+    return response.data;
+  };

@@ -51,10 +51,14 @@ export function useUsersApi() {
 
       await loadUsers();
     };
-
+  const refreshUsers =
+    async () => {
+      await loadUsers();
+    };
   return {
     users,
     addUser,
     removeUser,
+    refreshUsers,
   };
 }

@@ -8,8 +8,8 @@ import {
 import { useAuth } from "../../context/AuthContext";
 
 export default function Quizzes() {
-  const { user } =
-    useAuth();
+  
+  const { user } = useAuth();
 
   const { quizzes } =
     useStudentQuizzes(

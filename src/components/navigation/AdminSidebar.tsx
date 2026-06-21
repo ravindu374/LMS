@@ -53,7 +53,14 @@ export default function AdminSidebar() {
               Announcements
             </Link>
           </li>
-
+          <li>
+            <Link
+              to="/admin/payments"
+              className="block px-4 py-2 rounded hover:bg-slate-700"
+            >
+              Payments
+            </Link>
+          </li>
           <li>
             <Link
               to="/admin/users"

@@ -10,10 +10,10 @@ import {
 export default function ManageUsers() {
 
   const {
-    users,
-    addUser,
-    removeUser,
-  } = useUsersApi();
+  users,
+  addUser,
+  removeUser,
+} = useUsersApi();
 
   const [name, setName] =
     useState("");
@@ -138,48 +138,48 @@ export default function ManageUsers() {
           <thead>
 
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Action</th>
-            </tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                          </tr>
 
-          </thead>
+                        </thead>
 
-          <tbody>
+                        <tbody>
 
-            {filteredUsers.map(
-              (user) => (
-                <tr key={user.id}>
+                          {filteredUsers.map(
+                            (user) => (
+                              <tr key={user.id}>
 
-                  <td>
-                    {user.name}
-                  </td>
+                <td>
+                  {user.name}
+                </td>
 
-                  <td>
-                    {user.email}
-                  </td>
+                <td>
+                  {user.email}
+                </td>
 
-                  <td>
-                    {user.role}
-                  </td>
+                <td>
+                  {user.role}
+                </td>
 
-                  <td>
+                <td className="space-x-2">
 
-                    <button
-                      onClick={() =>
-                        removeUser(
-                          user.id
-                        )
-                      }
-                      className="bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Delete
-                    </button>
+                  <button
+                    onClick={() =>
+                      removeUser(
+                        user.id
+                      )
+                    }
+                    className="bg-red-600 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
 
-                  </td>
+                </td>
 
-                </tr>
+              </tr>
               )
             )}
 

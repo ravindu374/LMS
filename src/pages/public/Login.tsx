@@ -41,6 +41,7 @@ export default function Login() {
           id: result.id,
           name: result.name,
           role: result.role,
+          is_paid: result.is_paid,
         }
       );
 
@@ -61,66 +62,77 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow w-96"
-      >
-        <h1 className="text-3xl font-bold mb-6">
-          Login
-        </h1>
+  <div className="min-h-screen flex items-center justify-center bg-gray-100">
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(
-              e.target.value
-            )
-          }
-          className="w-full border p-3 rounded mb-4"
-        />
+    <form
+  onSubmit={handleSubmit}
+  className="bg-white p-8 rounded-xl shadow w-96"
+>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(
-              e.target.value
-            )
-          }
-          className="w-full border p-3 rounded mb-4"
-        />
+  <h1 className="text-3xl font-bold mb-6">
+    Login
+  </h1>
 
-        {error && (
-          <p className="text-red-600 mb-4">
-            {error}
-          </p>
-        )}
+  <input
+    type="email"
+    placeholder="Email"
+    value={email}
+    onChange={(e) =>
+      setEmail(e.target.value)
+    }
+    className="w-full border p-3 rounded mb-4"
+  />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded"
-        >
-          Login
-        </button>
+  <input
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) =>
+      setPassword(e.target.value)
+    }
+    className="w-full border p-3 rounded mb-4"
+  />
 
-        <div className="mt-6 text-sm">
-          <p>
-            Admin:
-            admin@lms.com /
-            admin123
-          </p>
+  {error && (
+    <p className="text-red-600 mb-4">
+      {error}
+    </p>
+  )}
 
-          <p>
-            Student:
-            ravindu@gmail.com /
-            ravindu123
-          </p>
-        </div>
-      </form>
-    </div>
-  );
+  <button
+    type="submit"
+    className="w-full bg-blue-600 text-white py-3 rounded"
+  >
+    Login
+  </button>
+
+  <p className="text-center mt-4">
+    Don't have an account?
+
+    <a
+      href="/register"
+      className="text-blue-600 ml-2"
+    >
+      Register
+    </a>
+  </p>
+
+  <div className="mt-6 text-sm">
+    <p>
+      Admin:
+      admin@lms.com /
+      admin123
+    </p>
+
+    <p>
+      Student:
+      ravindu@gmail.com /
+      ravindu123
+    </p>
+  </div>
+
+</form>
+
+  </div>
+);
 }

@@ -9,6 +9,7 @@ interface User {
   id: number;
   name: string;
   role: string;
+  is_paid: boolean;
 }
 
 interface AuthContextType {

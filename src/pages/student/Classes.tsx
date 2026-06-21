@@ -4,16 +4,18 @@ import ZoomCard from "../../components/cards/ZoomCard";
 import {
   useStudentClasses,
 } from "../../hooks/useStudentClasses";
+
 import { useAuth } from "../../context/AuthContext";
 
 export default function Classes() {
-  const { user } =
-      useAuth();
 
-    const { classes } =
-      useStudentClasses(
-        user?.id || 0
-      );
+  const { user } = useAuth();
+
+  const { classes } =
+    useStudentClasses(
+      user?.id || 0
+    );
+
 
   return (
     <StudentLayout>

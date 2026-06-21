@@ -6,8 +6,7 @@ import { useStudentAnnouncements } from "../../hooks/useStudentAnnouncements";
 
 export default function Announcements() {
 
-  const { user } =
-    useAuth();
+  const { user } = useAuth();
 
   const { announcements } =
     useStudentAnnouncements(
