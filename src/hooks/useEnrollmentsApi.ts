@@ -19,19 +19,19 @@ export function useEnrollmentsApi(
     setEnrollments,
   ] = useState<any[]>([]);
 
-  const isEnrolled =
-  async (
-    subjectId: number
-  ) => {
+  // const isEnrolled =
+  // async (
+  //   subjectId: number
+  // ) => {
 
-    const result =
-      await checkEnrollment(
-        userId,
-        subjectId
-      );
+  //   const result =
+  //     await checkEnrollment(
+  //       userId,
+  //       subjectId
+  //     );
 
-    return result.enrolled;
-  };
+  //   return result.enrolled;
+  // };
 
   const loadEnrollments =
     async () => {
