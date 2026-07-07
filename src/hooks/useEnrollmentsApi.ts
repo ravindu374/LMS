@@ -7,6 +7,7 @@ import {
   enrollSubject,
   getEnrollments,
   checkEnrollment,
+  removeEnrollment,
 } from "../services/enrollmentApi";
 
 export function useEnrollmentsApi(
@@ -61,10 +62,23 @@ export function useEnrollmentsApi(
 
       await loadEnrollments();
     };
+  
+  const deleteEnrollmentById =
+    async (
+      enrollmentId: number
+    ) => {
 
+      await removeEnrollment(
+        enrollmentId
+      );
+
+      await loadEnrollments();
+
+    };
+    
   return {
-    enrollments,
-    addEnrollment,
-    isEnrolled,
-  };
+  enrollments,
+  addEnrollment,
+  deleteEnrollmentById,
+};
 }

@@ -44,3 +44,17 @@ export const getEnrollments =
 
     return response.data;
   };
+
+  export const removeEnrollment =
+  async (
+    enrollmentId: number
+  ) => {
+
+    const response =
+      await api.delete(
+        `/enrollments/${enrollmentId}`
+      );
+
+    return response.data;
+
+  };

@@ -25,6 +25,7 @@ export default function Subjects() {
   const {
       enrollments,
       addEnrollment,
+      deleteEnrollmentById,
     } =
       useEnrollmentsApi(
         user?.id || 0
@@ -46,25 +47,84 @@ export default function Subjects() {
       <div className="grid md:grid-cols-3 gap-6">
         {filteredSubjects.map((subject) => {
 
-          const enrolled =
-            enrollments.some(
+          const enrollment =
+            enrollments.find(
               (e) =>
                 e.subject_id ===
                 subject.id
             );
 
           return (
-            <SubjectCard
-              key={subject.id}
-              name={subject.name}
-              lecturer={subject.lecturer}
-              enrolled={enrolled}
-              onEnroll={() =>
-                addEnrollment(
-                  subject.id
-                )
-              }
-            />
+
+            <div key={subject.id}>
+
+              <SubjectCard
+                name={subject.name}
+                lecturer={subject.lecturer}
+              />
+
+              <div className="mt-3">
+
+                {enrollment?.is_paid ? (
+
+                  <button
+                    disabled
+                    className="
+                      bg-gray-500
+                      text-white
+                      px-4
+                      py-2
+                      rounded
+                      cursor-not-allowed
+                    "
+                  >
+                    ✅ Paid Subject
+                  </button>
+
+                ) : enrollment ? (
+
+                  <button
+                    onClick={() =>
+                      deleteEnrollmentById(
+                        enrollment.id
+                      )
+                    }
+                    className="
+                      bg-red-600
+                      text-white
+                      px-4
+                      py-2
+                      rounded
+                    "
+                  >
+                    Unenroll
+                  </button>
+
+                ) : (
+
+                  <button
+                    onClick={() =>
+                      addEnrollment(
+                        subject.id
+                      )
+                    }
+                    className="
+                      bg-blue-600
+                      text-white
+                      px-4
+                      py-2
+                      rounded
+                    "
+                  >
+                    Enroll
+                  </button>
+
+                )}
+
+              </div>
+
+            </div>
+
           );
         })}
       </div>
