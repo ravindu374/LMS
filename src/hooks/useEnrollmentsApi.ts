@@ -6,7 +6,6 @@ import {
 import {
   enrollSubject,
   getEnrollments,
-  checkEnrollment,
   removeEnrollment,
 } from "../services/enrollmentApi";
 
