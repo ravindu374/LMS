@@ -36,11 +36,31 @@ export default function ManageQuizzes() {
 
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Manage Quizzes
-      </h1>
+      <div className="mb-10">
 
-      <div className="bg-white p-6 rounded-xl shadow mb-8">
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+          Manage Quizzes
+        </h1>
+
+        <p className="mt-3 text-slate-500 dark:text-slate-400">
+          Create quizzes and assign them to specific subjects.
+        </p>
+
+      </div>
+
+      <div
+        className="
+          rounded-3xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-white
+          dark:bg-slate-800
+          shadow-sm
+          p-8
+          mb-10
+        "
+      >
         <form
           onSubmit={handleSubmit}
           className="space-y-4"
@@ -52,7 +72,21 @@ export default function ManageQuizzes() {
                 e.target.value
               )
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-purple-500
+            "
           >
             <option value="">
               Select Subject
@@ -76,7 +110,21 @@ export default function ManageQuizzes() {
             onChange={(e) =>
               setTitle(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-purple-500
+            "
           />
 
           <input
@@ -85,7 +133,21 @@ export default function ManageQuizzes() {
             onChange={(e) =>
               setDeadline(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-purple-500
+            "
           />
 
           <input
@@ -95,37 +157,163 @@ export default function ManageQuizzes() {
             onChange={(e) =>
               setFormLink(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-purple-500
+            "
           />
 
           <button
             type="submit"
-            className="bg-purple-600 text-white px-6 py-3 rounded"
+            className="
+                    rounded-xl
+                    bg-purple-600
+                    hover:bg-purple-700
+                    text-white
+                    px-8
+                    py-3
+                    font-medium
+                    transition
+                  "
           >
             Add Quiz
           </button>
         </form>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <table className="w-full">
+      <div
+        className="
+          rounded-3xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-white
+          dark:bg-slate-800
+          shadow-sm
+          overflow-hidden
+        "
+      >
+        <table className="min-w-full">
+
+            <thead
+              className="
+                bg-slate-100
+                dark:bg-slate-900
+              "
+            >
+
+              <tr>
+
+                <th
+                  className="
+                    px-6
+                    py-4
+                    text-left
+                    font-semibold
+                    text-slate-700
+                    dark:text-slate-300
+                  "
+                >
+                  Quiz
+                </th>
+
+                <th
+                  className="
+                    px-6
+                    py-4
+                    text-left
+                    font-semibold
+                    text-slate-700
+                    dark:text-slate-300
+                  "
+                >
+                  Deadline
+                </th>
+
+                <th
+                  className="
+                    px-6
+                    py-4
+                    text-left
+                    font-semibold
+                    text-slate-700
+                    dark:text-slate-300
+                  "
+                >
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
           <tbody>
             {quizzes.map((quiz) => (
-              <tr key={quiz.id}>
-                <td className="p-2">
+              <tr
+                      key={quiz.id}
+                      className="
+                        hover:bg-slate-50
+                        dark:hover:bg-slate-700/40
+                        transition-colors
+                      "
+                    >
+                <td className="
+                        px-6
+                        py-4
+                        border-t
+                        border-slate-200
+                        dark:border-slate-700
+                        text-slate-700
+                        dark:text-slate-300
+                      ">
                   {quiz.title}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                    text-slate-700
+                    dark:text-slate-300
+                  ">
                   {quiz.deadline}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                    text-slate-700
+                    dark:text-slate-300
+                  ">
                   <button
                     onClick={() =>
                       removeQuiz(quiz.id)
                     }
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="
+                        rounded-xl
+                        bg-red-600
+                        hover:bg-red-700
+                        text-white
+                        px-5
+                        py-2
+                        transition
+                      "
                   >
                     Delete
                   </button>

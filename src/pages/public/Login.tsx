@@ -62,77 +62,277 @@ export default function Login() {
   };
 
   return (
-  <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div
+        className="
+          min-h-screen
+          flex
+          items-center
+          justify-center
+          bg-slate-100
+          dark:bg-slate-950
+          px-6
+          transition-colors
+        "
+      >
 
-    <form
-  onSubmit={handleSubmit}
-  className="bg-white p-8 rounded-xl shadow w-96"
->
+        <div
+          className="
+            w-full
+            max-w-md
+            rounded-3xl
+            border
+            border-slate-200
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-900
+            shadow-2xl
+            p-10
+          "
+        >
 
-  <h1 className="text-3xl font-bold mb-6">
-    Login
-  </h1>
+          <div className="text-center mb-10">
 
-  <input
-    type="email"
-    placeholder="Email"
-    value={email}
-    onChange={(e) =>
-      setEmail(e.target.value)
-    }
-    className="w-full border p-3 rounded mb-4"
-  />
+            <div
+              className="
+                w-20
+                h-20
+                rounded-2xl
+                bg-blue-600
+                mx-auto
+                flex
+                items-center
+                justify-center
+                text-3xl
+                font-bold
+                text-white
+                shadow-lg
+              "
+            >
+              LMS
+            </div>
 
-  <input
-    type="password"
-    placeholder="Password"
-    value={password}
-    onChange={(e) =>
-      setPassword(e.target.value)
-    }
-    className="w-full border p-3 rounded mb-4"
-  />
+            <h1
+              className="
+                mt-6
+                text-4xl
+                font-bold
+                text-slate-800
+                dark:text-white
+              "
+            >
+              Welcome Back
+            </h1>
 
-  {error && (
-    <p className="text-red-600 mb-4">
-      {error}
-    </p>
-  )}
+            <p
+              className="
+                mt-2
+                text-slate-500
+                dark:text-slate-400
+              "
+            >
+              Sign in to continue learning.
+            </p>
 
-  <button
-    type="submit"
-    className="w-full bg-blue-600 text-white py-3 rounded"
-  >
-    Login
-  </button>
+          </div>
 
-  <p className="text-center mt-4">
-    Don't have an account?
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5"
+          >
 
-    <a
-      href="/register"
-      className="text-blue-600 ml-2"
-    >
-      Register
-    </a>
-  </p>
+            <div>
 
-  <div className="mt-6 text-sm">
-    <p>
-      Admin:
-      admin@lms.com /
-      admin123
-    </p>
+              <label
+                className="
+                  block
+                  mb-2
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Email
+              </label>
 
-    <p>
-      Student:
-      ravindu@gmail.com /
-      ravindu123
-    </p>
-  </div>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-600
+                  bg-white
+                  dark:bg-slate-800
+                  text-slate-800
+                  dark:text-white
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
 
-</form>
+            </div>
 
-  </div>
-);
+            <div>
+
+              <label
+                className="
+                  block
+                  mb-2
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Password
+              </label>
+
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-600
+                  bg-white
+                  dark:bg-slate-800
+                  text-slate-800
+                  dark:text-white
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
+
+            </div>
+
+            {error && (
+
+              <div
+                className="
+                  rounded-xl
+                  bg-red-100
+                  dark:bg-red-900/30
+                  border
+                  border-red-300
+                  dark:border-red-700
+                  p-3
+                  text-red-700
+                  dark:text-red-300
+                "
+              >
+                {error}
+              </div>
+
+            )}
+
+            <button
+              type="submit"
+              className="
+                w-full
+                rounded-xl
+                bg-blue-600
+                hover:bg-blue-700
+                text-white
+                font-medium
+                py-3
+                transition
+              "
+            >
+              Login
+            </button>
+
+          </form>
+
+          <p
+            className="
+              mt-8
+              text-center
+              text-slate-600
+              dark:text-slate-400
+            "
+          >
+            Don't have an account?
+
+            <a
+              href="/register"
+              className="
+                ml-2
+                text-blue-600
+                hover:text-blue-700
+                font-medium
+              "
+            >
+              Register
+            </a>
+
+          </p>
+
+          <div
+            className="
+              mt-8
+              rounded-2xl
+              bg-slate-100
+              dark:bg-slate-800
+              p-5
+              text-sm
+            "
+          >
+
+            <p className="font-semibold text-slate-700 dark:text-slate-200 mb-3">
+              Demo Accounts
+            </p>
+
+            <div className="space-y-2">
+
+              <div>
+
+                <span className="font-medium">
+                  Admin
+                </span>
+
+                <p className="text-slate-500 dark:text-slate-400">
+                  admin@lms.com
+                </p>
+
+              </div>
+
+              <div>
+
+                <span className="font-medium">
+                  Student
+                </span>
+
+                <p className="text-slate-500 dark:text-slate-400">
+                  ravindu@gmail.com
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    );
 }

@@ -18,22 +18,66 @@ export default function Classes() {
 
 
   return (
-    <StudentLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Classes
+
+      <StudentLayout>
+
+      <div className="mb-10">
+
+      <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+      Classes
       </h1>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {classes.map((item) => (
-          <ZoomCard
-            key={item.id}
-            title={item.title}
-            date={item.date}
-            time={item.time}
-            link={item.zoomLink}
-          />
-        ))}
+      <p className="mt-2 text-slate-500 dark:text-slate-400">
+      Join your upcoming live classes from here.
+      </p>
+
       </div>
-    </StudentLayout>
-  );
+
+      {classes.length === 0 ? (
+
+      <div
+      className="
+      rounded-3xl
+      border
+      border-dashed
+      border-slate-300
+      dark:border-slate-700
+      bg-white
+      dark:bg-slate-800
+      p-12
+      text-center
+      "
+      >
+
+      <p className="text-slate-500 dark:text-slate-400">
+
+      No upcoming classes.
+
+      </p>
+
+      </div>
+
+      ) : (
+
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+      {classes.map((item) => (
+
+      <ZoomCard
+      key={item.id}
+      title={item.title}
+      date={item.date}
+      time={item.time}
+      link={item.zoomLink}
+      />
+
+      ))}
+
+      </div>
+
+      )}
+
+      </StudentLayout>
+
+      );
 }

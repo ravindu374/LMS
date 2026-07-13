@@ -41,14 +41,16 @@ export default function Dashboard() {
   return (
   <StudentLayout>
 
-    <div className="mb-8">
-        <h1 className="text-4xl font-bold">
+    <div className="mb-10">
+
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
           Welcome Back 👋
         </h1>
 
-        <p className="text-gray-600 mt-2">
-          View upcoming classes and quizzes.
+        <p className="mt-3 text-slate-500 dark:text-slate-400">
+          Continue your learning journey and stay updated with your latest activities.
         </p>
+
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -77,21 +79,38 @@ export default function Dashboard() {
         announcements={announcements.length}
       />
 
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-5">
         Upcoming Classes
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-6 mb-10">
+      {classes.length === 0 ? (
 
-        {classes.length === 0 ? (
+        <div
+          className="
+            rounded-2xl
+            border
+            border-dashed
+            border-slate-300
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-800
+            p-8
+            text-center
+          "
+        >
 
-          <p className="text-gray-500">
-            No classes available for paid subjects.
+          <p className="text-slate-500 dark:text-slate-400">
+            No classes available for your enrolled subjects.
           </p>
 
-        ) : (
+        </div>
 
-          classes.map((item) => (
+      ) : (
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+          {classes.map((item) => (
+
             <ZoomCard
               key={item.id}
               title={item.title}
@@ -99,67 +118,104 @@ export default function Dashboard() {
               time={item.time}
               link={item.zoomLink}
             />
-          ))
 
-        )}
+          ))}
 
-      </div>
+        </div>
 
-      <h2 className="text-2xl font-bold mb-4">
-        Active Quizzes
-      </h2>
+      )}
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-white mt-12 mb-5">
+          Active Quizzes
+        </h2>
 
         {quizzes.length === 0 ? (
 
-          <p className="text-gray-500">
-            No quizzes available for paid subjects.
-          </p>
+          <div
+            className="
+              rounded-2xl
+              border
+              border-dashed
+              border-slate-300
+              dark:border-slate-700
+              bg-white
+              dark:bg-slate-800
+              p-8
+              text-center
+            "
+          >
+
+            <p className="text-slate-500 dark:text-slate-400">
+              No quizzes available.
+            </p>
+
+          </div>
 
         ) : (
 
-          quizzes.map((item) => (
-            <QuizCard
-              key={item.id}
-              title={item.title}
-              deadline={item.deadline}
-              link={item.formLink}
-            />
-          ))
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+            {quizzes.map((item) => (
+
+              <QuizCard
+                key={item.id}
+                title={item.title}
+                deadline={item.deadline}
+                link={item.formLink}
+              />
+
+            ))}
+
+          </div>
 
         )}
 
-      </div>
-
-      <h2 className="text-2xl font-bold mt-10 mb-4">
-        Recent Announcements
-      </h2>
-
-      <div className="space-y-4">
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-white mt-12 mb-5">
+          Recent Announcements
+        </h2>
 
         {announcements.length === 0 ? (
 
-          <p className="text-gray-500">
-            No announcements available for paid subjects.
-          </p>
+          <div
+            className="
+              rounded-2xl
+              border
+              border-dashed
+              border-slate-300
+              dark:border-slate-700
+              bg-white
+              dark:bg-slate-800
+              p-8
+              text-center
+            "
+          >
+
+            <p className="text-slate-500 dark:text-slate-400">
+              No announcements available.
+            </p>
+
+          </div>
 
         ) : (
 
-          announcements
-            .slice(-3)
-            .reverse()
-            .map((item) => (
-              <AnnouncementCard
-                key={item.id}
-                title={item.title}
-                description={item.description}
-              />
-            ))
+          <div className="space-y-6">
+
+            {announcements
+              .slice(-3)
+              .reverse()
+              .map((item) => (
+
+                <AnnouncementCard
+                  key={item.id}
+                  title={item.title}
+                  description={item.description}
+                />
+
+              ))}
+
+          </div>
 
         )}
-
-      </div>
 
   </StudentLayout>
 );

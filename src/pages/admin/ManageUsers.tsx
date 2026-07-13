@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import AdminLayout
-from "../../layouts/AdminLayout";
+import AdminLayout from "../../layouts/AdminLayout";
 
 import {
   useUsersApi,
@@ -10,10 +9,10 @@ import {
 export default function ManageUsers() {
 
   const {
-  users,
-  addUser,
-  removeUser,
-} = useUsersApi();
+    users,
+    addUser,
+    removeUser,
+  } = useUsersApi();
 
   const [name, setName] =
     useState("");
@@ -44,6 +43,7 @@ export default function ManageUsers() {
       setName("");
       setEmail("");
       setPassword("");
+
     };
 
   const filteredUsers =
@@ -57,43 +57,88 @@ export default function ManageUsers() {
     );
 
   return (
+
     <AdminLayout>
 
-      <h1 className="text-3xl font-bold mb-6">
-        Manage Users
-      </h1>
+      <div className="mb-10">
 
-      <div className="bg-white p-6 rounded-xl shadow mb-8">
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+          Manage Users
+        </h1>
+
+        <p className="mt-3 text-slate-500 dark:text-slate-400">
+          Create and manage student accounts on the platform.
+        </p>
+
+      </div>
+
+      {/* Create Student */}
+
+      <div
+        className="
+          rounded-3xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-white
+          dark:bg-slate-800
+          shadow-sm
+          p-8
+          mb-10
+        "
+      >
 
         <form
-          onSubmit={
-            handleSubmit
-          }
-          className="space-y-4"
+          onSubmit={handleSubmit}
+          className="space-y-5"
         >
 
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Student Name"
             value={name}
             onChange={(e) =>
-              setName(
-                e.target.value
-              )
+              setName(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Student Email"
             value={email}
             onChange={(e) =>
-              setEmail(
-                e.target.value
-              )
+              setEmail(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <input
@@ -101,16 +146,37 @@ export default function ManageUsers() {
             placeholder="Password"
             value={password}
             onChange={(e) =>
-              setPassword(
-                e.target.value
-              )
+              setPassword(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
           />
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded"
+            className="
+              rounded-xl
+              bg-blue-600
+              hover:bg-blue-700
+              text-white
+              px-8
+              py-3
+              font-medium
+              transition
+            "
           >
             Create Student
           </button>
@@ -119,60 +185,218 @@ export default function ManageUsers() {
 
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow">
+      {/* User List */}
 
-        <input
-          type="text"
-          placeholder="Search User..."
-          value={search}
-          onChange={(e) =>
-            setSearch(
-              e.target.value
-            )
-          }
-          className="w-full border p-3 rounded mb-4"
-        />
+      <div
+        className="
+          rounded-3xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-white
+          dark:bg-slate-800
+          shadow-sm
+          overflow-hidden
+        "
+      >
 
-        <table className="w-full">
+        <div className="p-8">
 
-          <thead>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+            Student List
+          </h2>
+
+          <p className="mt-2 text-slate-500 dark:text-slate-400">
+            Search and manage registered users.
+          </p>
+
+          <input
+            type="text"
+            placeholder="Search students..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            className="
+              mt-6
+              w-full
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-600
+              bg-white
+              dark:bg-slate-900
+              dark:text-white
+              px-4
+              py-3
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+            "
+          />
+
+        </div>
+
+        <table className="min-w-full">
+
+          <thead
+            className="
+              bg-slate-100
+              dark:bg-slate-900
+            "
+          >
 
             <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                          </tr>
 
-                        </thead>
+              <th
+                className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Name
+              </th>
 
-                        <tbody>
+              <th
+                className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Email
+              </th>
 
-                          {filteredUsers.map(
-                            (user) => (
-                              <tr key={user.id}>
+              <th
+                className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Role
+              </th>
 
-                <td>
+              <th
+                className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                Action
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {filteredUsers.map((user) => (
+
+              <tr
+                key={user.id}
+                className="
+                  hover:bg-slate-50
+                  dark:hover:bg-slate-700/40
+                  transition-colors
+                "
+              >
+
+                <td
+                  className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                    text-slate-700
+                    dark:text-slate-300
+                  "
+                >
                   {user.name}
                 </td>
 
-                <td>
+                <td
+                  className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                    text-slate-700
+                    dark:text-slate-300
+                  "
+                >
                   {user.email}
                 </td>
 
-                <td>
-                  {user.role}
+                <td
+                  className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                  "
+                >
+
+                  <span
+                    className="
+                      inline-flex
+                      rounded-full
+                      bg-blue-100
+                      dark:bg-blue-900/30
+                      text-blue-700
+                      dark:text-blue-300
+                      px-3
+                      py-1
+                      text-sm
+                      font-medium
+                    "
+                  >
+                    {user.role}
+                  </span>
+
                 </td>
 
-                <td className="space-x-2">
+                <td
+                  className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                  "
+                >
 
                   <button
                     onClick={() =>
-                      removeUser(
-                        user.id
-                      )
+                      removeUser(user.id)
                     }
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="
+                      rounded-xl
+                      bg-red-600
+                      hover:bg-red-700
+                      text-white
+                      px-5
+                      py-2
+                      transition
+                    "
                   >
                     Delete
                   </button>
@@ -180,8 +404,8 @@ export default function ManageUsers() {
                 </td>
 
               </tr>
-              )
-            )}
+
+            ))}
 
           </tbody>
 
@@ -190,5 +414,7 @@ export default function ManageUsers() {
       </div>
 
     </AdminLayout>
+
   );
+
 }

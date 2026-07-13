@@ -38,11 +38,31 @@ export default function ManageSubjects() {
 
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Manage Subjects
-      </h1>
+      <div className="mb-10">
 
-      <div className="bg-white p-6 rounded-xl shadow mb-8">
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+          Manage Subjects
+        </h1>
+
+        <p className="mt-3 text-slate-500 dark:text-slate-400">
+          Create, update and organize subjects available on the learning platform.
+        </p>
+
+      </div>
+
+      <div
+          className="
+            rounded-3xl
+            border
+            border-slate-200
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-800
+            shadow-sm
+            p-8
+            mb-10
+          "
+        >
         <form
           onSubmit={handleSubmit}
           className="space-y-4"
@@ -54,7 +74,21 @@ export default function ManageSubjects() {
             onChange={(e) =>
               setName(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-600
+                  bg-white
+                  dark:bg-slate-900
+                  dark:text-white
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
           />
 
           <input
@@ -64,12 +98,35 @@ export default function ManageSubjects() {
             onChange={(e) =>
               setLecturer(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-600
+                  bg-white
+                  dark:bg-slate-900
+                  dark:text-white
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
           />
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded">
+            className="
+                    rounded-xl
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    font-medium
+                    transition
+                  ">
             {editingId ? "Update Subject" : "Add Subject"}
           </button>
           {editingId && (
@@ -80,7 +137,17 @@ export default function ManageSubjects() {
                 setName("");
                 setLecturer("");
               }}
-              className="bg-gray-500 text-white px-6 py-3 rounded ml-3"
+              className="
+                    ml-3
+                    rounded-xl
+                    bg-slate-500
+                    hover:bg-slate-600
+                    text-white
+                    px-8
+                    py-3
+                    font-medium
+                    transition
+                  "
             >
               Cancel
             </button>
@@ -88,23 +155,68 @@ export default function ManageSubjects() {
         </form>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="font-bold text-xl mb-4">
-          Subject List
-        </h2>
+      <div
+          className="
+            rounded-3xl
+            border
+            border-slate-200
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-800
+            shadow-sm
+            overflow-hidden
+          "
+        >
+        <div className="px-8 pt-8">
 
-        <table className="w-full">
-          <thead>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+                Subject List
+              </h2>
+
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                All subjects currently available on the platform.
+              </p>
+
+            </div>
+
+        <table className="min-w-full mt-6">
+          <thead
+            className="
+              bg-slate-100
+              dark:bg-slate-900
+            "
+          >
             <tr>
-              <th className="text-left p-2">
+              <th className="
+  px-6
+  py-4
+  text-left
+  font-semibold
+  text-slate-700
+  dark:text-slate-300
+">
                 Subject
               </th>
 
-              <th className="text-left p-2">
+              <th className="
+  px-6
+  py-4
+  text-left
+  font-semibold
+  text-slate-700
+  dark:text-slate-300
+">
                 Lecturer
               </th>
 
-              <th className="text-left p-2">
+              <th className="
+  px-6
+  py-4
+  text-left
+  font-semibold
+  text-slate-700
+  dark:text-slate-300
+">
                 Action
               </th>
             </tr>
@@ -112,12 +224,35 @@ export default function ManageSubjects() {
 
           <tbody>
             {subjects.map((subject) => (
-              <tr key={subject.id}>
-                <td className="p-2">
+              <tr
+                    key={subject.id}
+                    className="
+                      hover:bg-slate-50
+                      dark:hover:bg-slate-700/40
+                      transition-colors
+                    "
+                  >
+                <td className="
+                        px-6
+                        py-4
+                        border-t
+                        border-slate-200
+                        dark:border-slate-700
+                        text-slate-700
+                        dark:text-slate-300
+                      ">
                   {subject.name}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                      px-6
+                      py-4
+                      border-t
+                      border-slate-200
+                      dark:border-slate-700
+                      text-slate-700
+                      dark:text-slate-300
+                    ">
                   {subject.lecturer}
                 </td>
 
@@ -131,7 +266,15 @@ export default function ManageSubjects() {
 
                       setLecturer(subject.lecturer);
                     }}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
+                    className="
+                      rounded-xl
+                      bg-amber-500
+                      hover:bg-amber-600
+                      text-white
+                      px-5
+                      py-2
+                      transition
+                    "
                   >
                     Edit
                   </button>
@@ -140,7 +283,15 @@ export default function ManageSubjects() {
                     onClick={() =>
                       removeSubject(subject.id)
                     }
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="
+                      rounded-xl
+                      bg-red-600
+                      hover:bg-red-700
+                      text-white
+                      px-5
+                      py-2
+                      transition
+                    "
                   >
                     Delete
                   </button>

@@ -17,21 +17,65 @@ export default function Quizzes() {
     );
 
   return (
-    <StudentLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Quizzes
+
+      <StudentLayout>
+
+      <div className="mb-10">
+
+      <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+      Quizzes
       </h1>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {quizzes.map((quiz) => (
-          <QuizCard
-            key={quiz.id}
-            title={quiz.title}
-            deadline={quiz.deadline}
-            link={quiz.formLink}
-          />
-        ))}
+      <p className="mt-2 text-slate-500 dark:text-slate-400">
+      Complete your quizzes before the deadline.
+      </p>
+
       </div>
-    </StudentLayout>
-  );
+
+      {quizzes.length === 0 ? (
+
+      <div
+      className="
+      rounded-3xl
+      border
+      border-dashed
+      border-slate-300
+      dark:border-slate-700
+      bg-white
+      dark:bg-slate-800
+      p-12
+      text-center
+      "
+      >
+
+      <p className="text-slate-500 dark:text-slate-400">
+
+      No quizzes available.
+
+      </p>
+
+      </div>
+
+      ) : (
+
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+      {quizzes.map((quiz) => (
+
+      <QuizCard
+      key={quiz.id}
+      title={quiz.title}
+      deadline={quiz.deadline}
+      link={quiz.formLink}
+      />
+
+      ))}
+
+      </div>
+
+      )}
+
+      </StudentLayout>
+
+      );
 }

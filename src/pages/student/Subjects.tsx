@@ -35,100 +35,140 @@ export default function Subjects() {
 
 
   return (
+
     <StudentLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Subjects
-      </h1>
 
-      <SearchBar
-        value={search}
-        onChange={setSearch}
-      />
-      <div className="grid md:grid-cols-3 gap-6">
-        {filteredSubjects.map((subject) => {
+    <div className="mb-8">
 
-          const enrollment =
-            enrollments.find(
-              (e) =>
-                e.subject_id ===
-                subject.id
-            );
+    <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+    Available Subjects
+    </h1>
 
-          return (
+    <p className="mt-2 text-slate-500 dark:text-slate-400">
+    Enroll in subjects to access classes, quizzes and announcements.
+    </p>
 
-            <div key={subject.id}>
+    </div>
 
-              <SubjectCard
-                name={subject.name}
-                lecturer={subject.lecturer}
-              />
+    <div className="mb-8">
+    <SearchBar
+    value={search}
+    onChange={setSearch}
+    />
+    </div>
 
-              <div className="mt-3">
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-                {enrollment?.is_paid ? (
+    {filteredSubjects.map((subject) => {
 
-                  <button
-                    disabled
-                    className="
-                      bg-gray-500
-                      text-white
-                      px-4
-                      py-2
-                      rounded
-                      cursor-not-allowed
-                    "
-                  >
-                    ✅ Paid Subject
-                  </button>
+    const enrollment =
+    enrollments.find(
+    (e) =>
+    e.subject_id ===
+    subject.id
+    );
 
-                ) : enrollment ? (
+    return (
 
-                  <button
-                    onClick={() =>
-                      deleteEnrollmentById(
-                        enrollment.id
-                      )
-                    }
-                    className="
-                      bg-red-600
-                      text-white
-                      px-4
-                      py-2
-                      rounded
-                    "
-                  >
-                    Unenroll
-                  </button>
+    <div
+    key={subject.id}
+    className="
+    bg-white
+    dark:bg-slate-800
+    rounded-2xl
+    border
+    border-slate-200
+    dark:border-slate-700
+    shadow-sm
+    hover:shadow-xl
+    hover:-translate-y-1
+    transition
+    overflow-hidden
+    "
+    >
 
-                ) : (
+    <div className="p-6">
 
-                  <button
-                    onClick={() =>
-                      addEnrollment(
-                        subject.id
-                      )
-                    }
-                    className="
-                      bg-blue-600
-                      text-white
-                      px-4
-                      py-2
-                      rounded
-                    "
-                  >
-                    Enroll
-                  </button>
+    <SubjectCard
+    name={subject.name}
+    lecturer={subject.lecturer}
+    />
 
-                )}
+    <div className="mt-6">
 
-              </div>
+    {enrollment?.is_paid ? (
 
-            </div>
+    <button
+    disabled
+    className="
+    w-full
+    bg-green-600
+    text-white
+    py-3
+    rounded-xl
+    cursor-not-allowed
+    "
+    >
+    ✅ Paid Subject
+    </button>
 
-          );
-        })}
-      </div>
+    ) : enrollment ? (
+
+    <button
+    onClick={() =>
+    deleteEnrollmentById(
+    enrollment.id
+    )
+    }
+    className="
+    w-full
+    bg-red-500
+    hover:bg-red-600
+    text-white
+    py-3
+    rounded-xl
+    transition
+    "
+    >
+    Unenroll
+    </button>
+
+    ) : (
+
+    <button
+    onClick={() =>
+    addEnrollment(
+    subject.id
+    )
+    }
+    className="
+    w-full
+    bg-blue-600
+    hover:bg-blue-700
+    text-white
+    py-3
+    rounded-xl
+    transition
+    "
+    >
+    Enroll
+    </button>
+
+    )}
+
+    </div>
+
+    </div>
+
+    </div>
+
+    );
+
+    })}
+
+    </div>
+
     </StudentLayout>
-    
-  );
+
+    );
 }

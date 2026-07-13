@@ -45,10 +45,30 @@ export default function ManageClasses() {
 
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Manage Classes
-      </h1>
-      <div className="bg-white p-6 rounded-xl shadow mb-8">
+      <div className="mb-10">
+
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
+          Manage Classes
+        </h1>
+
+        <p className="mt-3 text-slate-500 dark:text-slate-400">
+          Schedule and manage live classes for each subject.
+        </p>
+
+      </div>
+      <div
+          className="
+            rounded-3xl
+            border
+            border-slate-200
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-800
+            shadow-sm
+            p-8
+            mb-10
+          "
+        >
         <form
           onSubmit={handleSubmit}
           className="space-y-4"
@@ -60,7 +80,21 @@ export default function ManageClasses() {
               e.target.value
             )
           }
-          className="w-full border p-3 rounded"
+          className="
+          w-full
+          rounded-xl
+          border
+          border-slate-300
+          dark:border-slate-600
+          bg-white
+          dark:bg-slate-900
+          dark:text-white
+          px-4
+          py-3
+          outline-none
+          focus:ring-2
+          focus:ring-green-500
+        "
         >
 
           <option value="">
@@ -87,7 +121,21 @@ export default function ManageClasses() {
             onChange={(e) =>
               setTitle(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+            w-full
+            rounded-xl
+            border
+            border-slate-300
+            dark:border-slate-600
+            bg-white
+            dark:bg-slate-900
+            dark:text-white
+            px-4
+            py-3
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
           />
 
           <input
@@ -96,7 +144,21 @@ export default function ManageClasses() {
             onChange={(e) =>
               setDate(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+            w-full
+            rounded-xl
+            border
+            border-slate-300
+            dark:border-slate-600
+            bg-white
+            dark:bg-slate-900
+            dark:text-white
+            px-4
+            py-3
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
           />
 
           <input
@@ -105,7 +167,21 @@ export default function ManageClasses() {
             onChange={(e) =>
               setTime(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+            w-full
+            rounded-xl
+            border
+            border-slate-300
+            dark:border-slate-600
+            bg-white
+            dark:bg-slate-900
+            dark:text-white
+            px-4
+            py-3
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
           />
 
           <input
@@ -115,32 +191,99 @@ export default function ManageClasses() {
             onChange={(e) =>
               setZoomLink(e.target.value)
             }
-            className="w-full border p-3 rounded"
+            className="
+            w-full
+            rounded-xl
+            border
+            border-slate-300
+            dark:border-slate-600
+            bg-white
+            dark:bg-slate-900
+            dark:text-white
+            px-4
+            py-3
+            outline-none
+            focus:ring-2
+            focus:ring-green-500
+          "
           />
 
           <button
             type="submit"
-            className="bg-green-600 text-white px-6 py-3 rounded"
+            className="
+            rounded-xl
+            bg-green-600
+            hover:bg-green-700
+            text-white
+            px-8
+            py-3
+            font-medium
+            transition
+          "
           >
             Add Class
           </button>
         </form>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <table className="w-full">
-          <thead>
+      <div
+            className="
+              rounded-3xl
+              border
+              border-slate-200
+              dark:border-slate-700
+              bg-white
+              dark:bg-slate-800
+              shadow-sm
+              overflow-hidden
+            "
+          >
+        <table className="min-w-full">
+          <thead
+              className="
+                bg-slate-100
+                dark:bg-slate-900
+              "
+            >
             <tr>
-              <th className="text-left p-2">
+              <th className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                ">
                 Title
               </th>
-              <th className="text-left p-2">
+              <th className="
+                    px-6
+                    py-4
+                    text-left
+                    font-semibold
+                    text-slate-700
+                    dark:text-slate-300
+                  ">
                 Date
               </th>
-              <th className="text-left p-2">
+              <th className="
+                  px-6
+                  py-4
+                  text-left
+                  font-semibold
+                  text-slate-700
+                  dark:text-slate-300
+                ">
                 Time
               </th>
-              <th className="text-left p-2">
+              <th className="
+                px-6
+                py-4
+                text-left
+                font-semibold
+                text-slate-700
+                dark:text-slate-300
+              ">
                 Action
               </th>
             </tr>
@@ -149,24 +292,64 @@ export default function ManageClasses() {
           <tbody>
             {classes.map((item) => (
               <tr key={item.id}>
-                <td className="p-2">
+                <td className="
+                    px-6
+                    py-4
+                    border-t
+                    border-slate-200
+                    dark:border-slate-700
+                    text-slate-700
+                    dark:text-slate-300
+                  ">
                   {item.title}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                  px-6
+                  py-4
+                  border-t
+                  border-slate-200
+                  dark:border-slate-700
+                  text-slate-700
+                  dark:text-slate-300
+                ">
                   {item.class_date}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                  px-6
+                  py-4
+                  border-t
+                  border-slate-200
+                  dark:border-slate-700
+                  text-slate-700
+                  dark:text-slate-300
+                ">
                   {item.class_time}
                 </td>
 
-                <td className="p-2">
+                <td className="
+                  px-6
+                  py-4
+                  border-t
+                  border-slate-200
+                  dark:border-slate-700
+                  text-slate-700
+                  dark:text-slate-300
+                ">
                   <button
                     onClick={() =>
                       removeClass(item.id)
                     }
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="
+                    rounded-lg
+                    bg-red-600
+                    hover:bg-red-700
+                    text-white
+                    px-4
+                    py-2
+                    transition
+                  "
                   >
                     Delete
                   </button>
