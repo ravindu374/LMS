@@ -12,6 +12,7 @@ import {
 
 import { useSidebar } from "../../context/SidebarContext";
 import { useAuth } from "../../context/AuthContext";
+import { prefetchRoute } from "../../routes/prefetch";
 
 export default function Sidebar() {
 
@@ -156,6 +157,10 @@ export default function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              // Start fetching the route chunk before the click lands.
+              onMouseEnter={() => prefetchRoute(item.path)}
+              onFocus={() => prefetchRoute(item.path)}
+              onTouchStart={() => prefetchRoute(item.path)}
               className={({ isActive }) =>
 
                 `

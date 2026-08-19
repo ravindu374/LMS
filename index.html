@@ -2,9 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>learning_platform</title>
+
+    <title>LearnHub — Learning Management System</title>
+    <meta
+      name="description"
+      content="Access your classes, quizzes, announcements and learning materials from one modern platform built for students and lecturers."
+    />
+    <meta name="theme-color" content="#2563eb" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      Open the TCP + TLS connection to the image CDN while the JS is still
+      parsing, instead of after React renders the hero. The API origin is
+      injected here at build time from VITE_API_URL (see vite.config.ts).
+    -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+    <!--
+      Apply the saved theme before first paint. Without this the class is
+      added in a useEffect, so dark-mode users get a white flash on every
+      page load.
+    -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {
+          /* private mode / storage disabled - fall back to light */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

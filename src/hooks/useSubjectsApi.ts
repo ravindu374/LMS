@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   getSubjects,
@@ -10,65 +7,69 @@ import {
   deleteSubject,
 } from "../services/subjectApi";
 
+import { invalidate, useApiResource } from "./useApiResource";
+
 export interface Subject {
   id: number;
   name: string;
   lecturer: string;
 }
 
+const EMPTY: Subject[] = [];
+
 export function useSubjectsApi() {
-  const [subjects, setSubjects] =
-    useState<Subject[]>([]);
+  const {
+    data: subjects,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<Subject[]>(
+    "subjects",
+    getSubjects,
+    EMPTY
+  );
 
-  const loadSubjects =
-    async () => {
-      const data =
-        await getSubjects();
-
-      setSubjects(data);
-    };
-
-  useEffect(() => {
-    loadSubjects();
+  // Editing a subject changes what enrolled students see, so their cached
+  // enrollment rows are stale too.
+  const invalidateDependents = useCallback(() => {
+    invalidate("enrollments:");
   }, []);
 
-  const addSubject =
-    async (
-      name: string,
-      lecturer: string
-    ) => {
-      await createSubject(
-        name,
-        lecturer
-      );
+  const addSubject = useCallback(
+    async (name: string, lecturer: string) => {
+      await createSubject(name, lecturer);
 
-      await loadSubjects();
-    };
+      invalidateDependents();
+      await refresh();
+    },
+    [refresh, invalidateDependents]
+  );
 
-  const editSubject =
-    async (
-      id: number,
-      name: string,
-      lecturer: string
-    ) => {
-      await updateSubject(
-        id,
-        name,
-        lecturer
-      );
+  const editSubject = useCallback(
+    async (id: number, name: string, lecturer: string) => {
+      await updateSubject(id, name, lecturer);
 
-      await loadSubjects();
-    };
+      invalidateDependents();
+      await refresh();
+    },
+    [refresh, invalidateDependents]
+  );
 
-  const removeSubject =
+  const removeSubject = useCallback(
     async (id: number) => {
       await deleteSubject(id);
 
-      await loadSubjects();
-    };
+      invalidateDependents();
+      await refresh();
+    },
+    [refresh, invalidateDependents]
+  );
 
   return {
     subjects,
+    loading,
+    error,
+    refresh,
     addSubject,
     editSubject,
     removeSubject,

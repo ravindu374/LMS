@@ -1,11 +1,19 @@
+import { lazy, Suspense, useMemo } from "react";
+
 import StudentLayout from "../../layouts/StudentLayout";
 
 import StatCard from "../../components/cards/StatCard";
 import ZoomCard from "../../components/cards/ZoomCard";
 import QuizCard from "../../components/cards/QuizCard";
 
-import DashboardChart from "../../components/cards/DashboardChart";
 import AnnouncementCard from "../../components/cards/AnnouncementCard";
+import DataState from "../../components/ui/DataState";
+
+// recharts is ~400kb of the bundle and sits below the fold — load it
+// separately so the dashboard stats paint without waiting for it.
+const DashboardChart = lazy(
+  () => import("../../components/cards/DashboardChart")
+);
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -16,26 +24,37 @@ import { useEnrollmentsApi } from "../../hooks/useEnrollmentsApi";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  
-  const { enrollments } =
-    useEnrollmentsApi(
-      user?.id || 0
-    );
+  const userId = user?.id ?? 0;
 
-    const { classes } =
-      useStudentClasses(
-        user?.id || 0
-      );
+  const { enrollments } = useEnrollmentsApi(userId);
 
-    const { quizzes } =
-      useStudentQuizzes(
-        user?.id || 0
-      );
+  const {
+    classes,
+    loading: classesLoading,
+    error: classesError,
+    refresh: refreshClasses,
+  } = useStudentClasses(userId);
 
-    const { announcements } =
-      useStudentAnnouncements(
-        user?.id || 0
-      );
+  const {
+    quizzes,
+    loading: quizzesLoading,
+    error: quizzesError,
+    refresh: refreshQuizzes,
+  } = useStudentQuizzes(userId);
+
+  const {
+    announcements,
+    loading: announcementsLoading,
+    error: announcementsError,
+    refresh: refreshAnnouncements,
+  } = useStudentAnnouncements(userId);
+
+  // Newest three. slice() copies first, so reverse() does not mutate the
+  // cached array shared with other pages.
+  const recentAnnouncements = useMemo(
+    () => announcements.slice(-3).reverse(),
+    [announcements]
+  );
 
 
   return (
@@ -72,41 +91,42 @@ export default function Dashboard() {
 
       </div>
 
-      <DashboardChart
-        subjects={enrollments.length}
-        classes={classes.length}
-        quizzes={quizzes.length}
-        announcements={announcements.length}
-      />
+      <Suspense
+        fallback={
+          <div
+            className="
+              h-[27rem]
+              rounded-3xl
+              border
+              border-slate-200
+              dark:border-slate-700
+              bg-white
+              dark:bg-slate-800
+              animate-pulse
+              mb-8
+            "
+          />
+        }
+      >
+        <DashboardChart
+          subjects={enrollments.length}
+          classes={classes.length}
+          quizzes={quizzes.length}
+          announcements={announcements.length}
+        />
+      </Suspense>
 
       <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-5">
         Upcoming Classes
       </h2>
 
-      {classes.length === 0 ? (
-
-        <div
-          className="
-            rounded-2xl
-            border
-            border-dashed
-            border-slate-300
-            dark:border-slate-700
-            bg-white
-            dark:bg-slate-800
-            p-8
-            text-center
-          "
-        >
-
-          <p className="text-slate-500 dark:text-slate-400">
-            No classes available for your enrolled subjects.
-          </p>
-
-        </div>
-
-      ) : (
-
+      <DataState
+        loading={classesLoading}
+        error={classesError}
+        isEmpty={classes.length === 0}
+        emptyMessage="No classes available for your enrolled subjects."
+        onRetry={refreshClasses}
+      >
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
           {classes.map((item) => (
@@ -122,37 +142,19 @@ export default function Dashboard() {
           ))}
 
         </div>
-
-      )}
+      </DataState>
 
       <h2 className="text-2xl font-bold text-slate-800 dark:text-white mt-12 mb-5">
           Active Quizzes
         </h2>
 
-        {quizzes.length === 0 ? (
-
-          <div
-            className="
-              rounded-2xl
-              border
-              border-dashed
-              border-slate-300
-              dark:border-slate-700
-              bg-white
-              dark:bg-slate-800
-              p-8
-              text-center
-            "
-          >
-
-            <p className="text-slate-500 dark:text-slate-400">
-              No quizzes available.
-            </p>
-
-          </div>
-
-        ) : (
-
+        <DataState
+          loading={quizzesLoading}
+          error={quizzesError}
+          isEmpty={quizzes.length === 0}
+          emptyMessage="No quizzes available."
+          onRetry={refreshQuizzes}
+        >
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
             {quizzes.map((item) => (
@@ -167,55 +169,34 @@ export default function Dashboard() {
             ))}
 
           </div>
-
-        )}
+        </DataState>
 
       <h2 className="text-2xl font-bold text-slate-800 dark:text-white mt-12 mb-5">
           Recent Announcements
         </h2>
 
-        {announcements.length === 0 ? (
-
-          <div
-            className="
-              rounded-2xl
-              border
-              border-dashed
-              border-slate-300
-              dark:border-slate-700
-              bg-white
-              dark:bg-slate-800
-              p-8
-              text-center
-            "
-          >
-
-            <p className="text-slate-500 dark:text-slate-400">
-              No announcements available.
-            </p>
-
-          </div>
-
-        ) : (
-
+        <DataState
+          loading={announcementsLoading}
+          error={announcementsError}
+          isEmpty={announcements.length === 0}
+          emptyMessage="No announcements available."
+          onRetry={refreshAnnouncements}
+          skeletonCount={2}
+        >
           <div className="space-y-6">
 
-            {announcements
-              .slice(-3)
-              .reverse()
-              .map((item) => (
+            {recentAnnouncements.map((item) => (
 
-                <AnnouncementCard
-                  key={item.id}
-                  title={item.title}
-                  description={item.description}
-                />
+              <AnnouncementCard
+                key={item.id}
+                title={item.title}
+                description={item.description}
+              />
 
-              ))}
+            ))}
 
           </div>
-
-        )}
+        </DataState>
 
   </StudentLayout>
 );

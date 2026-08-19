@@ -14,6 +14,8 @@ import {
   useEnrollmentsApi,
 } from "../../hooks/useEnrollmentsApi";
 
+import DataState from "../../components/ui/DataState";
+
 export default function MySubjects() {
 
   const { user } =
@@ -21,6 +23,8 @@ export default function MySubjects() {
 
   const {
     enrollments,
+    loading,
+    error,
   } =
     useEnrollmentsApi(
       user?.id || 0
@@ -42,43 +46,12 @@ Access your enrolled subjects and continue your learning journey.
 
 </div>
 
-{enrollments.length === 0 ? (
-
-<div
-className="
-rounded-3xl
-bg-white
-dark:bg-slate-800
-border
-border-dashed
-border-slate-300
-dark:border-slate-700
-p-14
-text-center
-shadow-sm
-"
+<DataState
+loading={loading}
+error={error}
+isEmpty={enrollments.length === 0}
+emptyMessage="Enroll in a subject to begin your learning experience."
 >
-
-<BookOpen
-className="
-mx-auto
-mb-5
-text-blue-500
-"
-size={56}
-/>
-
-<h2 className="text-2xl font-semibold text-slate-800 dark:text-white">
-No Subjects Yet
-</h2>
-
-<p className="mt-3 text-slate-500 dark:text-slate-400">
-Enroll in a subject to begin your learning experience.
-</p>
-
-</div>
-
-) : (
 
 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
@@ -172,7 +145,7 @@ Continue Learning
 
 </div>
 
-)}
+</DataState>
 
 </StudentLayout>
 

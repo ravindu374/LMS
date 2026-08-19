@@ -1,39 +1,20 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { getStudentAnnouncements } from "../services/announcementApi";
 
-import {
-  getStudentAnnouncements,
-} from "../services/announcementApi";
+import { useApiResource } from "./useApiResource";
 
-export function useStudentAnnouncements(
-  userId: number
-) {
+const EMPTY: any[] = [];
 
-  const [
-    announcements,
-    setAnnouncements,
-  ] = useState<any[]>([]);
+export function useStudentAnnouncements(userId: number) {
+  const {
+    data: announcements,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>(
+    userId ? `announcements:student:${userId}` : null,
+    () => getStudentAnnouncements(userId),
+    EMPTY
+  );
 
-  const loadAnnouncements =
-    async () => {
-
-      if (!userId) return;
-
-      const data =
-        await getStudentAnnouncements(
-          userId
-        );
-
-      setAnnouncements(data);
-    };
-
-  useEffect(() => {
-    loadAnnouncements();
-  }, [userId]);
-
-  return {
-    announcements,
-  };
+  return { announcements, loading, error, refresh };
 }

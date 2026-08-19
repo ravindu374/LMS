@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   getQuizzes,
@@ -9,48 +6,47 @@ import {
   deleteQuiz,
 } from "../services/quizApi";
 
+import { invalidate, useApiResource } from "./useApiResource";
+
+const EMPTY: any[] = [];
+
 export function useQuizzesApi() {
-  const [quizzes, setQuizzes] =
-    useState<any[]>([]);
+  const {
+    data: quizzes,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>("quizzes", getQuizzes, EMPTY);
 
-  const loadQuizzes =
-    async () => {
-      const data =
-        await getQuizzes();
-
-      setQuizzes(data);
-    };
-
-  useEffect(() => {
-    loadQuizzes();
-  }, []);
-
-  const addQuiz =
+  const addQuiz = useCallback(
     async (
       title: string,
       deadline: string,
       form_link: string,
       subject_id: number
     ) => {
-      await createQuiz(
-        title,
-        deadline,
-        form_link,
-        subject_id
-      );
+      await createQuiz(title, deadline, form_link, subject_id);
 
-      await loadQuizzes();
-    };
+      invalidate("quizzes");
+      await refresh();
+    },
+    [refresh]
+  );
 
-  const removeQuiz =
+  const removeQuiz = useCallback(
     async (id: number) => {
       await deleteQuiz(id);
 
-      await loadQuizzes();
-    };
+      invalidate("quizzes");
+      await refresh();
+    },
+    [refresh]
+  );
 
   return {
     quizzes,
+    loading,
+    error,
     addQuiz,
     removeQuiz,
   };

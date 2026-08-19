@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   getUsers,
@@ -9,56 +6,51 @@ import {
   deleteUser,
 } from "../services/userApi";
 
+import { invalidate, useApiResource } from "./useApiResource";
+
+const EMPTY: any[] = [];
+
 export function useUsersApi() {
+  const {
+    data: users,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>("users", getUsers, EMPTY);
 
-  const [users, setUsers] =
-    useState<any[]>([]);
-
-  const loadUsers =
-    async () => {
-      const data =
-        await getUsers();
-
-      setUsers(data);
-    };
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  const addUser =
+  const addUser = useCallback(
     async (
       name: string,
       email: string,
       password: string,
       role: string
     ) => {
+      await createUser(name, email, password, role);
 
-      await createUser(
-        name,
-        email,
-        password,
-        role
-      );
+      await refresh();
+    },
+    [refresh]
+  );
 
-      await loadUsers();
-    };
-
-  const removeUser =
+  const removeUser = useCallback(
     async (id: number) => {
-
       await deleteUser(id);
 
-      await loadUsers();
-    };
-  const refreshUsers =
-    async () => {
-      await loadUsers();
-    };
+      // A deleted user's enrollments and payment rows go with them.
+      invalidate("enrollments:");
+      invalidate("payments");
+
+      await refresh();
+    },
+    [refresh]
+  );
+
   return {
     users,
+    loading,
+    error,
     addUser,
     removeUser,
-    refreshUsers,
+    refreshUsers: refresh,
   };
 }

@@ -97,10 +97,28 @@ export default function Home() {
 
             <div>
 
+              {/*
+                Unsplash serves the full-resolution original when no query
+                params are given. Ask for a sized, auto-formatted (webp/avif)
+                copy instead, and give the browser dimensions up front so the
+                hero does not shift while it loads.
+              */}
               <img
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
-                alt="Learning"
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=70"
+                srcSet={[
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=640&q=70 640w",
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=70 1000w",
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=70 1400w",
+                ].join(", ")}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                width={1000}
+                height={667}
+                alt="Students collaborating during a study session"
+                fetchPriority="high"
+                decoding="async"
                 className="
+                  w-full
+                  h-auto
                   rounded-3xl
                   shadow-2xl
                   border

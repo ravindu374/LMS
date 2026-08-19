@@ -1,50 +1,37 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useMemo } from "react";
 
-import {
-  getStudentQuizzes,
-} from "../services/quizApi";
+import { getStudentQuizzes } from "../services/quizApi";
 
-export function useStudentQuizzes(
-  userId: number
-) {
+import { useApiResource } from "./useApiResource";
 
-  const [quizzes, setQuizzes] =
-    useState<any[]>([]);
+export interface StudentQuiz {
+  id: number;
+  title: string;
+  deadline: string;
+  formLink: string;
+  subject_id: number;
+}
 
-  const loadQuizzes =
-    async () => {
+const EMPTY: any[] = [];
 
-      if (!userId) return;
+export function useStudentQuizzes(userId: number) {
+  const { data, loading, error, refresh } = useApiResource<any[]>(
+    userId ? `quizzes:student:${userId}` : null,
+    () => getStudentQuizzes(userId),
+    EMPTY
+  );
 
-      const data =
-        await getStudentQuizzes(
-          userId
-        );
+  const quizzes = useMemo<StudentQuiz[]>(
+    () =>
+      data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        deadline: item.deadline,
+        formLink: item.form_link,
+        subject_id: item.subject_id,
+      })),
+    [data]
+  );
 
-      setQuizzes(
-        data.map(
-          (item: any) => ({
-            id: item.id,
-            title: item.title,
-            deadline:
-              item.deadline,
-            formLink:
-              item.form_link,
-            subject_id:
-              item.subject_id,
-          })
-        )
-      );
-    };
-
-  useEffect(() => {
-    loadQuizzes();
-  }, [userId]);
-
-  return {
-    quizzes,
-  };
+  return { quizzes, loading, error, refresh };
 }

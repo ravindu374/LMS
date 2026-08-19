@@ -1,6 +1,8 @@
 import {
   createContext,
+  useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
 
@@ -10,37 +12,35 @@ interface SidebarContextType {
 }
 
 const SidebarContext =
-  createContext<SidebarContextType | null>(
-    null
-  );
+  createContext<SidebarContextType | null>(null);
 
 export function SidebarProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isOpen, setIsOpen] =
-    useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  // Functional update: the callback no longer needs `isOpen` as a dependency,
+  // so its identity stays stable across renders.
+  const toggleSidebar = useCallback(() => {
+    setIsOpen((open) => !open);
+  }, []);
+
+  const value = useMemo(
+    () => ({ isOpen, toggleSidebar }),
+    [isOpen, toggleSidebar]
+  );
 
   return (
-    <SidebarContext.Provider
-      value={{
-        isOpen,
-        toggleSidebar,
-      }}
-    >
+    <SidebarContext.Provider value={value}>
       {children}
     </SidebarContext.Provider>
   );
 }
 
 export function useSidebar() {
-  const context =
-    useContext(SidebarContext);
+  const context = useContext(SidebarContext);
 
   if (!context) {
     throw new Error(

@@ -1,5 +1,6 @@
 import StudentLayout from "../../layouts/StudentLayout";
 import ZoomCard from "../../components/cards/ZoomCard";
+import DataState from "../../components/ui/DataState";
 
 import {
   useStudentClasses,
@@ -11,10 +12,8 @@ export default function Classes() {
 
   const { user } = useAuth();
 
-  const { classes } =
-    useStudentClasses(
-      user?.id || 0
-    );
+  const { classes, loading, error, refresh } =
+    useStudentClasses(user?.id || 0);
 
 
   return (
@@ -33,31 +32,13 @@ export default function Classes() {
 
       </div>
 
-      {classes.length === 0 ? (
-
-      <div
-      className="
-      rounded-3xl
-      border
-      border-dashed
-      border-slate-300
-      dark:border-slate-700
-      bg-white
-      dark:bg-slate-800
-      p-12
-      text-center
-      "
+      <DataState
+      loading={loading}
+      error={error}
+      isEmpty={classes.length === 0}
+      emptyMessage="No upcoming classes."
+      onRetry={refresh}
       >
-
-      <p className="text-slate-500 dark:text-slate-400">
-
-      No upcoming classes.
-
-      </p>
-
-      </div>
-
-      ) : (
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
@@ -75,7 +56,7 @@ export default function Classes() {
 
       </div>
 
-      )}
+      </DataState>
 
       </StudentLayout>
 

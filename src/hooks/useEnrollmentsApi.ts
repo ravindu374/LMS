@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   enrollSubject,
@@ -9,75 +6,55 @@ import {
   removeEnrollment,
 } from "../services/enrollmentApi";
 
-export function useEnrollmentsApi(
-  userId: number
-) {
+import { invalidate, useApiResource } from "./useApiResource";
 
-  const [
-    enrollments,
-    setEnrollments,
-  ] = useState<any[]>([]);
+const EMPTY: any[] = [];
 
-  // const isEnrolled =
-  // async (
-  //   subjectId: number
-  // ) => {
+export function useEnrollmentsApi(userId: number) {
+  const {
+    data: enrollments,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>(
+    userId ? `enrollments:${userId}` : null,
+    () => getEnrollments(userId),
+    EMPTY
+  );
 
-  //   const result =
-  //     await checkEnrollment(
-  //       userId,
-  //       subjectId
-  //     );
+  const addEnrollment = useCallback(
+    async (subjectId: number) => {
+      await enrollSubject(userId, subjectId);
 
-  //   return result.enrolled;
-  // };
+      // Enrolling changes what classes/quizzes/announcements this student
+      // sees, so those caches have to go too.
+      invalidate(`classes:student:${userId}`);
+      invalidate(`quizzes:student:${userId}`);
+      invalidate(`announcements:student:${userId}`);
 
-  const loadEnrollments =
-    async () => {
+      await refresh();
+    },
+    [userId, refresh]
+  );
 
-      if (!userId) return;
+  const deleteEnrollmentById = useCallback(
+    async (enrollmentId: number) => {
+      await removeEnrollment(enrollmentId);
 
-      const data =
-        await getEnrollments(
-          userId
-        );
+      invalidate(`classes:student:${userId}`);
+      invalidate(`quizzes:student:${userId}`);
+      invalidate(`announcements:student:${userId}`);
 
-      setEnrollments(data);
-    };
+      await refresh();
+    },
+    [userId, refresh]
+  );
 
-  useEffect(() => {
-    loadEnrollments();
-  }, [userId]);
-
-  const addEnrollment =
-    async (
-      subjectId: number
-    ) => {
-
-      await enrollSubject(
-        userId,
-        subjectId
-      );
-
-      await loadEnrollments();
-    };
-  
-  const deleteEnrollmentById =
-    async (
-      enrollmentId: number
-    ) => {
-
-      await removeEnrollment(
-        enrollmentId
-      );
-
-      await loadEnrollments();
-
-    };
-    
   return {
-  enrollments,
-  addEnrollment,
-  deleteEnrollmentById,
-};
+    enrollments,
+    loading,
+    error,
+    addEnrollment,
+    deleteEnrollmentById,
+  };
 }

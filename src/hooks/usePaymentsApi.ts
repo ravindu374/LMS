@@ -1,52 +1,38 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   getPayments,
   updatePayment,
 } from "../services/paymentApi";
 
+import { invalidate, useApiResource } from "./useApiResource";
+
+const EMPTY: any[] = [];
+
 export function usePaymentsApi() {
+  const {
+    data: payments,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>("payments", getPayments, EMPTY);
 
-  const [
-    payments,
-    setPayments,
-  ] = useState<any[]>([]);
+  const togglePayment = useCallback(
+    async (id: number, is_paid: boolean) => {
+      await updatePayment(id, is_paid);
 
-  const loadPayments =
-    async () => {
+      // The student's Subjects page reads is_paid off the enrollment row.
+      invalidate("enrollments:");
 
-      const data =
-        await getPayments();
-
-      setPayments(data);
-
-    };
-
-  useEffect(() => {
-    loadPayments();
-  }, []);
-
-  const togglePayment =
-    async (
-      id: number,
-      is_paid: boolean
-    ) => {
-
-      await updatePayment(
-        id,
-        is_paid
-      );
-
-      await loadPayments();
-
-    };
+      await refresh();
+    },
+    [refresh]
+  );
 
   return {
     payments,
+    loading,
+    error,
     togglePayment,
   };
-
 }

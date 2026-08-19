@@ -1,5 +1,6 @@
 import StudentLayout from "../../layouts/StudentLayout";
 import QuizCard from "../../components/cards/QuizCard";
+import DataState from "../../components/ui/DataState";
 
 import {
   useStudentQuizzes,
@@ -8,13 +9,11 @@ import {
 import { useAuth } from "../../context/AuthContext";
 
 export default function Quizzes() {
-  
+
   const { user } = useAuth();
 
-  const { quizzes } =
-    useStudentQuizzes(
-      user?.id || 0
-    );
+  const { quizzes, loading, error, refresh } =
+    useStudentQuizzes(user?.id || 0);
 
   return (
 
@@ -32,31 +31,13 @@ export default function Quizzes() {
 
       </div>
 
-      {quizzes.length === 0 ? (
-
-      <div
-      className="
-      rounded-3xl
-      border
-      border-dashed
-      border-slate-300
-      dark:border-slate-700
-      bg-white
-      dark:bg-slate-800
-      p-12
-      text-center
-      "
+      <DataState
+      loading={loading}
+      error={error}
+      isEmpty={quizzes.length === 0}
+      emptyMessage="No quizzes available."
+      onRetry={refresh}
       >
-
-      <p className="text-slate-500 dark:text-slate-400">
-
-      No quizzes available.
-
-      </p>
-
-      </div>
-
-      ) : (
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
@@ -73,7 +54,7 @@ export default function Quizzes() {
 
       </div>
 
-      )}
+      </DataState>
 
       </StudentLayout>
 

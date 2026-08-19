@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   registerUser,
@@ -345,8 +345,9 @@ export default function Register() {
             >
               Already have an account?
 
-              <a
-                href="/login"
+              {/* Client-side nav: an <a href> reloaded the entire SPA. */}
+              <Link
+                to="/login"
                 className="
                   ml-2
                   text-blue-600
@@ -355,7 +356,7 @@ export default function Register() {
                 "
               >
                 Login
-              </a>
+              </Link>
 
             </p>
 

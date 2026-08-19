@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useCallback } from "react";
 
 import {
   getClasses,
@@ -9,23 +6,19 @@ import {
   deleteClass,
 } from "../services/classApi";
 
+import { invalidate, useApiResource } from "./useApiResource";
+
+const EMPTY: any[] = [];
+
 export function useClassesApi() {
-  const [classes, setClasses] =
-    useState<any[]>([]);
+  const {
+    data: classes,
+    loading,
+    error,
+    refresh,
+  } = useApiResource<any[]>("classes", getClasses, EMPTY);
 
-  const loadClasses =
-    async () => {
-      const data =
-        await getClasses();
-
-      setClasses(data);
-    };
-
-  useEffect(() => {
-    loadClasses();
-  }, []);
-
-  const addClass =
+  const addClass = useCallback(
     async (
       title: string,
       class_date: string,
@@ -33,7 +26,6 @@ export function useClassesApi() {
       zoom_link: string,
       subject_id: number
     ) => {
-
       await createClass(
         title,
         class_date,
@@ -41,18 +33,29 @@ export function useClassesApi() {
         zoom_link,
         subject_id
       );
-          await loadClasses();
-  };
-  const removeClass =
+
+      // Also clears the per-student `classes:student:<id>` entries.
+      invalidate("classes");
+      await refresh();
+    },
+    [refresh]
+  );
+
+  const removeClass = useCallback(
     async (id: number) => {
       await deleteClass(id);
 
-      await loadClasses();
-    };
+      invalidate("classes");
+      await refresh();
+    },
+    [refresh]
+  );
 
   return {
     classes,
+    loading,
+    error,
     addClass,
     removeClass,
   };
-    }
+}

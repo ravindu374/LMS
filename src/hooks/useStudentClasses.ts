@@ -1,49 +1,40 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useMemo } from "react";
 
-import {
-  getStudentClasses,
-} from "../services/classApi";
+import { getStudentClasses } from "../services/classApi";
 
-export function useStudentClasses(
-  userId: number
-) {
+import { useApiResource } from "./useApiResource";
 
-  const [classes, setClasses] =
-    useState<any[]>([]);
+export interface StudentClass {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  zoomLink: string;
+  subject_id: number;
+}
 
-  const loadClasses =
-    async () => {
+const EMPTY: any[] = [];
 
-      if (!userId) return;
+export function useStudentClasses(userId: number) {
+  const { data, loading, error, refresh } = useApiResource<any[]>(
+    userId ? `classes:student:${userId}` : null,
+    () => getStudentClasses(userId),
+    EMPTY
+  );
 
-      const data =
-        await getStudentClasses(
-          userId
-        );
+  // Map the snake_case API shape once per fetch instead of on every render.
+  const classes = useMemo<StudentClass[]>(
+    () =>
+      data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        date: item.class_date,
+        time: item.class_time,
+        zoomLink: item.zoom_link,
+        subject_id: item.subject_id,
+      })),
+    [data]
+  );
 
-      setClasses(
-        data.map(
-          (item: any) => ({
-            id: item.id,
-            title: item.title,
-            date: item.class_date,
-            time: item.class_time,
-            zoomLink: item.zoom_link,
-            subject_id:
-              item.subject_id,
-          })
-        )
-      );
-    };
-
-  useEffect(() => {
-    loadClasses();
-  }, [userId]);
-
-  return {
-    classes,
-  };
+  return { classes, loading, error, refresh };
 }

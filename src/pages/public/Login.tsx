@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
-
-//import { useAuth } from "../../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 import {loginUser,} from "../../services/authApi";
 
 import {useAuth,} from "../../context/AuthContext";
+
+import {
+  prefetchLandingRoute,
+  prefetchRoute,
+} from "../../routes/prefetch";
 
 
 export default function Login() {
@@ -23,10 +26,24 @@ export default function Login() {
   const [error, setError] =
     useState("");
 
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  // Download the student dashboard chunk while the user is typing, so the
+  // redirect after a successful login does not wait on a network request.
+  useEffect(() => {
+    prefetchLandingRoute("student");
+  }, []);
+
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
     e.preventDefault();
+
+    if (submitting) return;
+
+    setSubmitting(true);
+    setError("");
 
     try {
       const result =
@@ -34,6 +51,12 @@ export default function Login() {
           email,
           password
         );
+
+      // Admins land somewhere else; start that chunk now rather than after
+      // navigate() renders the Suspense fallback.
+      if (result.role === "admin") {
+        prefetchRoute("/admin/dashboard");
+      }
 
       login(
         result.token,
@@ -54,10 +77,27 @@ export default function Login() {
       } else {
         navigate("/dashboard");
       }
-    } catch {
-      setError(
-        "Invalid credentials"
-      );
+    } catch (err: unknown) {
+      // Distinguish "wrong password" from "the API never answered" — on
+      // Render's free tier the first login of the day can time out while the
+      // instance wakes up, and "Invalid credentials" was misleading there.
+      const code = (err as { code?: string })?.code;
+      const status = (err as { response?: { status?: number } })?.response
+        ?.status;
+
+      if (code === "ECONNABORTED") {
+        setError(
+          "The server is waking up. Please try again in a moment."
+        );
+      } else if (status === undefined) {
+        setError(
+          "Could not reach the server. Check your connection and try again."
+        );
+      } else {
+        setError("Invalid credentials");
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -246,18 +286,21 @@ export default function Login() {
 
             <button
               type="submit"
+              disabled={submitting}
               className="
                 w-full
                 rounded-xl
                 bg-blue-600
                 hover:bg-blue-700
+                disabled:opacity-60
+                disabled:cursor-not-allowed
                 text-white
                 font-medium
                 py-3
                 transition
               "
             >
-              Login
+              {submitting ? "Signing in…" : "Login"}
             </button>
 
           </form>
@@ -272,8 +315,13 @@ export default function Login() {
           >
             Don't have an account?
 
-            <a
-              href="/register"
+            {/*
+              Was an <a href> - that reloaded the whole SPA (re-downloading
+              React, the router and the CSS) just to move between two routes.
+            */}
+            <Link
+              to="/register"
+              onMouseEnter={() => prefetchRoute("/register")}
               className="
                 ml-2
                 text-blue-600
@@ -282,7 +330,7 @@ export default function Login() {
               "
             >
               Register
-            </a>
+            </Link>
 
           </p>
 
