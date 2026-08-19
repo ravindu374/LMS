@@ -50,6 +50,7 @@ export function useAnnouncementsApi() {
     announcements,
     loading,
     error,
+    refresh,
     addAnnouncement,
     removeAnnouncement,
   };

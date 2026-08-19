@@ -16,7 +16,7 @@ import { prefetchRoute } from "../../routes/prefetch";
 
 export default function Sidebar() {
 
-  const { isOpen } = useSidebar();
+  const { isOpen, closeSidebar } = useSidebar();
 
   const { user } = useAuth();
 
@@ -161,6 +161,10 @@ export default function Sidebar() {
               onMouseEnter={() => prefetchRoute(item.path)}
               onFocus={() => prefetchRoute(item.path)}
               onTouchStart={() => prefetchRoute(item.path)}
+              // On mobile the sidebar is a full drawer over the content;
+              // without this it stayed open after navigating and the user
+              // had to tap the backdrop separately to see the new page.
+              onClick={closeSidebar}
               className={({ isActive }) =>
 
                 `

@@ -33,6 +33,7 @@ export function usePaymentsApi() {
     payments,
     loading,
     error,
+    refresh,
     togglePayment,
   };
 }

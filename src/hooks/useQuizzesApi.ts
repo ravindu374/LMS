@@ -47,6 +47,7 @@ export function useQuizzesApi() {
     quizzes,
     loading,
     error,
+    refresh,
     addQuiz,
     removeQuiz,
   };

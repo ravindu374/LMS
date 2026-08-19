@@ -12,6 +12,7 @@ import Home from "../pages/public/Home";
 import Login from "../pages/public/Login";
 
 const Register = lazy(() => import("../pages/public/register"));
+const NotFound = lazy(() => import("../pages/public/NotFound"));
 
 // Student area — only downloaded after login.
 const Dashboard = lazy(() => import("../pages/student/Dashboard"));
@@ -52,6 +53,8 @@ export default function AppRoutes() {
         <Route path="/admin/quizzes" element={<AdminRoute><ManageQuizzes /></AdminRoute>} />
         <Route path="/admin/announcements" element={<AdminRoute><ManageAnnouncements /></AdminRoute>} />
         <Route path="/admin/payments" element={<AdminRoute><ManagePayments /></AdminRoute>} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );

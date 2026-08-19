@@ -9,6 +9,7 @@ import {
 interface SidebarContextType {
   isOpen: boolean;
   toggleSidebar: () => void;
+  closeSidebar: () => void;
 }
 
 const SidebarContext =
@@ -27,9 +28,13 @@ export function SidebarProvider({
     setIsOpen((open) => !open);
   }, []);
 
+  const closeSidebar = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   const value = useMemo(
-    () => ({ isOpen, toggleSidebar }),
-    [isOpen, toggleSidebar]
+    () => ({ isOpen, toggleSidebar, closeSidebar }),
+    [isOpen, toggleSidebar, closeSidebar]
   );
 
   return (

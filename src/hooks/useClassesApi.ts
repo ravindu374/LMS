@@ -55,6 +55,7 @@ export function useClassesApi() {
     classes,
     loading,
     error,
+    refresh,
     addClass,
     removeClass,
   };

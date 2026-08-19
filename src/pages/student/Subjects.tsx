@@ -9,6 +9,8 @@ import { useSubjectsApi } from "../../hooks/useSubjectsApi";
 import { useAuth, } from "../../context/AuthContext";
 
 import { useEnrollmentsApi,} from "../../hooks/useEnrollmentsApi";
+import { useToast } from "../../context/ToastContext";
+import { getErrorMessage } from "../../utils/errorMessage";
 
 interface Enrollment {
   id: number;
@@ -27,12 +29,50 @@ export default function Subjects() {
   } = useSubjectsApi();
 
   const { user } = useAuth();
+  const toast = useToast();
 
   const {
     enrollments,
     addEnrollment,
     deleteEnrollmentById,
   } = useEnrollmentsApi(user?.id || 0);
+
+  // Enroll/unenroll previously gave zero feedback - a slow or failed request
+  // just looked like the button did nothing. Tracks the in-flight subject so
+  // only that card's button shows a pending state and can't be double-tapped.
+  const [pendingSubjectId, setPendingSubjectId] = useState<number | null>(
+    null
+  );
+
+  const handleEnroll = async (subjectId: number, subjectName: string) => {
+    setPendingSubjectId(subjectId);
+
+    try {
+      await addEnrollment(subjectId);
+      toast.success(`Enrolled in ${subjectName}.`);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Could not enroll in this subject."));
+    } finally {
+      setPendingSubjectId(null);
+    }
+  };
+
+  const handleUnenroll = async (
+    enrollmentId: number,
+    subjectId: number,
+    subjectName: string
+  ) => {
+    setPendingSubjectId(subjectId);
+
+    try {
+      await deleteEnrollmentById(enrollmentId);
+      toast.success(`Unenrolled from ${subjectName}.`);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Could not unenroll from this subject."));
+    } finally {
+      setPendingSubjectId(null);
+    }
+  };
 
   // Re-filter only when the query or the list actually changes, not on every
   // unrelated re-render (theme toggle, sidebar, enrollment refresh).
@@ -79,6 +119,8 @@ export default function Subjects() {
     <SearchBar
     value={search}
     onChange={setSearch}
+    label="Search subjects"
+    placeholder="Search subjects..."
     />
     </div>
 
@@ -149,42 +191,51 @@ export default function Subjects() {
 
     <button
     onClick={() =>
-    deleteEnrollmentById(
-    enrollment.id
+    handleUnenroll(
+    enrollment.id,
+    subject.id,
+    subject.name
     )
     }
+    disabled={pendingSubjectId === subject.id}
     className="
     w-full
     bg-red-500
     hover:bg-red-600
+    disabled:opacity-60
+    disabled:cursor-not-allowed
     text-white
     py-3
     rounded-xl
     transition
     "
     >
-    Unenroll
+    {pendingSubjectId === subject.id ? "Unenrolling…" : "Unenroll"}
     </button>
 
     ) : (
 
     <button
     onClick={() =>
-    addEnrollment(
-    subject.id
+    handleEnroll(
+    subject.id,
+    subject.name
     )
     }
+    disabled={pendingSubjectId === subject.id}
     className="
     w-full
     bg-blue-600
     hover:bg-blue-700
+    disabled:opacity-60
+    disabled:cursor-not-allowed
     text-white
     py-3
     rounded-xl
     transition
     "
     >
-    Enroll
+    {pendingSubjectId === subject.id ? "Enrolling…" : "Enroll"}
     </button>
 
     )}

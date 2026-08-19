@@ -10,6 +10,7 @@ import {
   prefetchLandingRoute,
   prefetchRoute,
 } from "../../routes/prefetch";
+import { getErrorMessage } from "../../utils/errorMessage";
 
 
 export default function Login() {
@@ -78,24 +79,17 @@ export default function Login() {
         navigate("/dashboard");
       }
     } catch (err: unknown) {
-      // Distinguish "wrong password" from "the API never answered" — on
-      // Render's free tier the first login of the day can time out while the
-      // instance wakes up, and "Invalid credentials" was misleading there.
-      const code = (err as { code?: string })?.code;
+      // A 401/400 from this endpoint always means bad credentials; anything
+      // else (timeout, network, 5xx) goes through the shared message so it
+      // doesn't get misreported as "Invalid credentials".
       const status = (err as { response?: { status?: number } })?.response
         ?.status;
 
-      if (code === "ECONNABORTED") {
-        setError(
-          "The server is waking up. Please try again in a moment."
-        );
-      } else if (status === undefined) {
-        setError(
-          "Could not reach the server. Check your connection and try again."
-        );
-      } else {
-        setError("Invalid credentials");
-      }
+      setError(
+        status === 401 || status === 400
+          ? "Invalid email or password."
+          : getErrorMessage(err)
+      );
     } finally {
       setSubmitting(false);
     }
@@ -183,6 +177,7 @@ export default function Login() {
             <div>
 
               <label
+                htmlFor="login-email"
                 className="
                   block
                   mb-2
@@ -196,12 +191,17 @@ export default function Login() {
               </label>
 
               <input
+                id="login-email"
+                name="email"
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) =>
                   setEmail(e.target.value)
                 }
+                required
+                autoComplete="email"
+                aria-invalid={!!error}
                 className="
                   w-full
                   rounded-xl
@@ -225,6 +225,7 @@ export default function Login() {
             <div>
 
               <label
+                htmlFor="login-password"
                 className="
                   block
                   mb-2
@@ -238,12 +239,18 @@ export default function Login() {
               </label>
 
               <input
+                id="login-password"
+                name="password"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) =>
                   setPassword(e.target.value)
                 }
+                required
+                minLength={6}
+                autoComplete="current-password"
+                aria-invalid={!!error}
                 className="
                   w-full
                   rounded-xl
@@ -267,6 +274,7 @@ export default function Login() {
             {error && (
 
               <div
+                role="alert"
                 className="
                   rounded-xl
                   bg-red-100

@@ -49,8 +49,8 @@ export function useUsersApi() {
     users,
     loading,
     error,
+    refresh,
     addUser,
     removeUser,
-    refreshUsers: refresh,
   };
 }

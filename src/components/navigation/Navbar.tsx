@@ -51,6 +51,7 @@ export default function Navbar() {
 
         <button
           onClick={toggleSidebar}
+          aria-label="Toggle menu"
           className="
             md:hidden
             p-2
@@ -79,6 +80,9 @@ export default function Navbar() {
 
         <button
           onClick={toggleTheme}
+          aria-label={
+            darkMode ? "Switch to light mode" : "Switch to dark mode"
+          }
           className="
             w-11
             h-11
